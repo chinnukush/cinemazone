@@ -22,7 +22,17 @@ export default function Token() {
 
   const { tokenID } = useParams();
   const auth = getAuth();
-  const userId = auth.currentUser?.uid;
+  const [userId, setUserId] = useState(null);
+
+useEffect(() => {
+  const unsubscribe = auth.onAuthStateChanged((user) => {
+    if (user) {
+      setUserId(user.uid);
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
 
   // Fetch the user's token from Firestore
   const fetchUserToken = async (userId) => {
