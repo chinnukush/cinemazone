@@ -49,26 +49,6 @@ export default function Footer() {
                 
               </div>
             </div>
-            {/* MIDDLE */}
-            <div className="p-0 w-full text-primaryTextColor md:w-1/3 lg:p-6 ">
-              <button className="border-b-2 border-otherColor text-xl cursor-default mb-5 md:text-2xl">
-                What we have
-              </button>
-              <div className="flex gap-2 flex-wrap">
-                <div className="text-sm px-6 py-1 rounded-full bg-otherColor text-bgColor lg:text-md">
-                  <h1 className="">Movies</h1>
-                </div>
-                <div className="text-sm px-6 py-1 rounded-full bg-otherColor text-bgColor lg:text-md">
-                  <h1 className="">TV shows</h1>
-                </div>
-                <div className="text-sm px-6 py-1 rounded-full bg-otherColor text-bgColor lg:text-md">
-                  <h1 className="">Anime</h1>
-                </div>
-                <div className="text-sm px-6 py-1 rounded-full bg-otherColor text-bgColor lg:text-md">
-                  <h1 className="">K-Drama</h1>
-                </div>
-              </div>
-            </div>
             {/* RIGHT */}
             <div className="p-0 w-full text-primaryTextColor md:w-1/3 lg:p-6">
               <button className="border-b-2 border-otherColor text-xl cursor-default mb-5 md:text-2xl">
