@@ -124,7 +124,7 @@ useEffect(() => {
           />
           <div className="flex flex-col gap-1 items-center justify-center">
             <h1>
-              Done! Now enjoy the echo without limit For {SHORTNER_TIME} hr.
+              Verification successful! Enjoy unlimited downloads for {SHORTNER_TIME} hours.
             </h1>
             <h2>Closing in: {countdown} seconds</h2>
           </div>
