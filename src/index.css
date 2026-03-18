@@ -145,6 +145,25 @@ body {
   animation: l4 1s infinite alternate;
 }
 
+/* LIGHT MODE */
+html.light {
+  background: #ffffff;
+  color: #000000;
+}
+
+html.light body {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Fix cards / sections */
+html.light .bg-black {
+  background: #f1f1f1 !important;
+  color: #000 !important;
+}
+
+/* Codes added */
+
 @keyframes l4 {
   0%,25% {
     background-size: 8px 0, 8px 4px, 8px 4px,
