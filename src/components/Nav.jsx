@@ -24,7 +24,7 @@ export default function Nav() {
   const location = useLocation();
   const closeSearchResultsDropDown = useRef();
 
-  // 🌙 THEME LOAD
+  // 🌙 LOAD THEME
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);
@@ -33,7 +33,7 @@ export default function Nav() {
     }
   }, []);
 
-  // 🌙 TOGGLE
+  // 🌙 TOGGLE THEME
   const toggleTheme = () => {
     if (theme === "dark") {
       document.documentElement.classList.add("light");
@@ -46,7 +46,7 @@ export default function Nav() {
     }
   };
 
-  // NAV STATUS
+  // 📍 NAV ACTIVE STATUS
   useEffect(() => {
     const path = location.pathname;
     if (path === "/") setNavStatus("Home");
@@ -54,7 +54,7 @@ export default function Nav() {
     else if (path.startsWith("/ser")) setNavStatus("Series");
   }, [location.pathname]);
 
-  // 🔥 DEBOUNCE
+  // ⏳ DEBOUNCE SEARCH
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedVal(query);
@@ -62,7 +62,7 @@ export default function Nav() {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // 🔥 SEARCH API (OLD WORKING LOGIC)
+  // 🔍 SEARCH API
   useEffect(() => {
     if (debouncedVal.trim() === "") {
       setSearchResult([]);
@@ -80,7 +80,7 @@ export default function Nav() {
       .catch(() => setIsLoading(false));
   }, [debouncedVal]);
 
-  // 🔥 CLOSE DROPDOWN
+  // ❌ CLOSE SEARCH DROPDOWN
   useEffect(() => {
     const handler = (e) => {
       if (
@@ -97,11 +97,11 @@ export default function Nav() {
   }, []);
 
   return (
-    <div className="fixed flex items-center justify-between gap-3 z-20 bg-bgColor/60 backdrop-blur-md top-0 left-0 right-0 py-4 px-5 md:px-10 text-white">
+    <div className="fixed flex items-center justify-between gap-3 z-20 bg-bgColor/80 backdrop-blur-xl border-b border-white/10 top-0 left-0 right-0 py-4 px-5 md:px-10 text-black dark:text-white">
 
-      {/* LEFT */}
+      {/* 🔥 LEFT (LOGO + THEME) */}
       <div className="flex items-center gap-3">
-        <div className="bg-black px-3 py-1 rounded-lg font-bold uppercase">
+        <div className="bg-black text-white px-3 py-1 rounded-lg font-bold uppercase">
           cz
         </div>
 
@@ -117,19 +117,48 @@ export default function Nav() {
         </button>
       </div>
 
-      {/* SITENAME */}
+      {/* 🏷 SITENAME */}
       <Link to="/" className="hidden md:block font-bold text-xl">
         {SITENAME}
       </Link>
 
-      {/* NAV */}
-      <nav className="hidden md:flex gap-6">
-        <Link to="/">Home</Link>
-        <Link to="/mov">Movies</Link>
-        <Link to="/ser">Series</Link>
+      {/* 📌 NAV MENU */}
+      <nav className="flex gap-6 text-sm md:text-base">
+        <Link
+          to="/"
+          className={`flex items-center gap-1 ${
+            navStatus === "Home"
+              ? "text-otherColor font-semibold"
+              : "hover:text-otherColor"
+          }`}
+        >
+          <BiHomeAlt2 /> Home
+        </Link>
+
+        <Link
+          to="/mov"
+          className={`flex items-center gap-1 ${
+            navStatus === "Movies"
+              ? "text-otherColor font-semibold"
+              : "hover:text-otherColor"
+          }`}
+        >
+          <BiSolidMovie /> Movies
+        </Link>
+
+        <Link
+          to="/ser"
+          className={`flex items-center gap-1 ${
+            navStatus === "Series"
+              ? "text-otherColor font-semibold"
+              : "hover:text-otherColor"
+          }`}
+        >
+          <BsTv /> Series
+        </Link>
       </nav>
 
-      {/* SEARCH */}
+      {/* 🔍 SEARCH */}
       <div
         className="relative w-full md:w-1/3"
         ref={closeSearchResultsDropDown}
@@ -139,14 +168,14 @@ export default function Nav() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search movies..."
-          className="w-full py-2 px-4 bg-btnColor rounded-md"
+          className="w-full py-2 px-4 bg-btnColor rounded-md outline-none"
         />
 
         <FiSearch className="absolute right-3 top-3" />
 
-        {/* 🔥 SEARCH RESULTS */}
+        {/* RESULTS */}
         {debouncedVal && (
-          <div className="absolute top-12 w-full bg-black rounded-lg p-3 max-h-80 overflow-y-auto z-50">
+          <div className="absolute top-12 w-full bg-black text-white rounded-lg p-3 max-h-80 overflow-y-auto z-50">
 
             {isLoading ? (
               <p>Loading...</p>
