@@ -27,7 +27,9 @@ export default function Nav() {
   const searchRef = useRef();
   const mobileRef = useRef();
 
-  // 🌙 THEME
+  /* ========================= */
+  /* 🌙 THEME */
+  /* ========================= */
   useEffect(() => {
     const saved = localStorage.getItem("theme") || "dark";
     setTheme(saved);
@@ -48,7 +50,9 @@ export default function Nav() {
     }
   };
 
-  // ✅ FIXED NAV STATUS
+  /* ========================= */
+  /* NAV STATUS */
+  /* ========================= */
   useEffect(() => {
     const path = location.pathname;
     if (path === "/") setNavStatus("Home");
@@ -56,7 +60,9 @@ export default function Nav() {
     else if (path.startsWith("/Series")) setNavStatus("Series");
   }, [location.pathname]);
 
-  // ⏳ DEBOUNCE
+  /* ========================= */
+  /* DEBOUNCE */
+  /* ========================= */
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedVal(query);
@@ -64,7 +70,9 @@ export default function Nav() {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // 🔍 SEARCH
+  /* ========================= */
+  /* SEARCH */
+  /* ========================= */
   useEffect(() => {
     if (!debouncedVal.trim()) {
       setSearchResult([]);
@@ -82,7 +90,9 @@ export default function Nav() {
       .catch(() => setIsLoading(false));
   }, [debouncedVal]);
 
-  // ❌ CLOSE SEARCH
+  /* ========================= */
+  /* CLOSE SEARCH */
+  /* ========================= */
   useEffect(() => {
     const handler = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -96,12 +106,13 @@ export default function Nav() {
   return (
     <div className="fixed flex items-center justify-between z-50 bg-bgColor/80 backdrop-blur-lg top-0 left-0 right-0 py-4 px-5 md:px-10">
 
-      {/* LEFT (LOGO + THEME) */}
+      {/* LEFT */}
       <div className="flex items-center gap-3">
         <div className="bg-black text-white px-3 py-1 rounded-lg font-bold uppercase">
           cz
         </div>
 
+        {/* 🌙 THEME TOGGLE */}
         <button
           onClick={toggleTheme}
           className="w-14 h-7 flex items-center bg-gray-700 rounded-full p-1"
@@ -119,34 +130,42 @@ export default function Nav() {
         {SITENAME}
       </Link>
 
-      {/* ✅ RIGHT SIDE MENU (FIXED POSITION) */}
+      {/* RIGHT */}
       <div className="flex items-center gap-5 ml-auto">
 
         {/* DESKTOP MENU */}
-        <nav className="hidden md:flex gap-6">
+        <nav className="hidden md:flex gap-6 items-center">
+
           <Link
             to="/"
-            className={navStatus === "Home" ? "text-otherColor" : ""}
+            className={`flex items-center gap-2 ${
+              navStatus === "Home" ? "text-otherColor" : ""
+            }`}
           >
-            <BiHomeAlt2 />
+            🏠 <BiHomeAlt2 /> <span>Home</span>
           </Link>
 
           <Link
             to="/Movies"
-            className={navStatus === "Movies" ? "text-otherColor" : ""}
+            className={`flex items-center gap-2 ${
+              navStatus === "Movies" ? "text-otherColor" : ""
+            }`}
           >
-            <BiSolidMovie />
+            🎬 <BiSolidMovie /> <span>Movies</span>
           </Link>
 
           <Link
             to="/Series"
-            className={navStatus === "Series" ? "text-otherColor" : ""}
+            className={`flex items-center gap-2 ${
+              navStatus === "Series" ? "text-otherColor" : ""
+            }`}
           >
-            <BsTv />
+            📺 <BsTv /> <span>Series</span>
           </Link>
+
         </nav>
 
-        {/* MOBILE MENU BUTTON (TOP RIGHT) */}
+        {/* MOBILE MENU */}
         <div className="md:hidden relative" ref={mobileRef}>
           <div
             onClick={() => setMobileMenuOpen(true)}
@@ -161,14 +180,35 @@ export default function Nav() {
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 50, opacity: 0 }}
-                className="absolute right-0 top-10 bg-black text-white p-5 rounded-xl"
+                className="absolute right-0 top-10 bg-black text-white p-5 rounded-xl w-44"
               >
-                <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link><br />
-                <Link to="/Movies" onClick={() => setMobileMenuOpen(false)}>Movies</Link><br />
-                <Link to="/Series" onClick={() => setMobileMenuOpen(false)}>Series</Link>
+
+                <Link
+                  to="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 py-2"
+                >
+                  🏠 Home
+                </Link>
+
+                <Link
+                  to="/Movies"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 py-2"
+                >
+                  🎬 Movies
+                </Link>
+
+                <Link
+                  to="/Series"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 py-2"
+                >
+                  📺 Series
+                </Link>
 
                 <VscClose
-                  className="absolute top-2 right-2 cursor-pointer"
+                  className="absolute top-2 right-2 cursor-pointer text-xl"
                   onClick={() => setMobileMenuOpen(false)}
                 />
               </motion.div>
@@ -183,7 +223,7 @@ export default function Nav() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search movies..."
+          placeholder="🔎 Search movies..."
           className="w-full py-2 px-4 bg-btnColor rounded-md outline-none"
         />
 
@@ -214,14 +254,14 @@ export default function Nav() {
                     <p>{item.title}</p>
                     {item.rating && (
                       <span className="text-xs flex items-center gap-1">
-                        <BiStar /> {item.rating.toFixed(1)}
+                        ⭐ <BiStar /> {item.rating.toFixed(1)}
                       </span>
                     )}
                   </div>
                 </Link>
               ))
             ) : (
-              <p>No results found</p>
+              <p>❌ No results found</p>
             )}
           </div>
         )}
