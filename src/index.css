@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================= */
 /* RESET */
+/* ========================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,28 +13,72 @@
   scroll-behavior: smooth;
 }
 
-/* DEFAULT DARK MODE */
+/* ========================= */
+/* 🌙 DARK MODE (DEFAULT) */
+/* ========================= */
 body {
-  background: #0b0b0b;
+  background: #0f0f0f;
   color: #ffffff;
 }
 
-/* Mask */
+/* Navbar / glass */
+.bg-bgColor {
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+/* Cards */
+.bg-black {
+  background: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+/* Buttons */
+.bg-btnColor {
+  background: #27272a !important;
+  color: #ffffff !important;
+}
+
+/* Text */
+.text-secondaryTextColor {
+  color: #a1a1aa !important;
+}
+
+.text-otherColor {
+  color: #e50914 !important;
+  font-weight: 600;
+}
+
+/* Inputs */
+input {
+  background: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #333;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+/* ========================= */
+/* MASK */
+/* ========================= */
 .mask {
   mask-image: linear-gradient(to top, transparent, #121212);
 }
 
-/* Modal animation */
+/* ========================= */
+/* MODAL */
+/* ========================= */
 .modal {
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-/* Video player */
+/* ========================= */
+/* VIDEO PLAYER */
+/* ========================= */
 #player {
   transition: transform 0.3s ease;
 }
 
-/* Portrait mode */
 @media (orientation: portrait) {
   #player {
     transform: rotate(90deg) scale(1.75);
@@ -40,14 +86,15 @@ body {
   }
 }
 
-/* Landscape mode */
 @media (orientation: landscape) {
   #player {
     transform: none;
   }
 }
 
-/* Scrollbar (Dark) */
+/* ========================= */
+/* SCROLLBAR */
+/* ========================= */
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -58,12 +105,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #FFD700;
+  background: #e50914;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #e6c200;
+  background: #b20710;
 }
 
 /* ========================= */
@@ -75,8 +122,8 @@ body {
   width: 20px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #FFD700;
-  box-shadow: 0 0 0 0 #FFD700;
+  background: #e50914;
+  box-shadow: 0 0 0 0 #e50914;
   animation: l2 1.5s infinite linear;
   position: relative;
 }
@@ -87,7 +134,7 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 0 0 #FFD700;
+  box-shadow: 0 0 0 0 #e50914;
   animation: inherit;
   animation-delay: -0.5s;
 }
@@ -98,7 +145,7 @@ body {
 
 @keyframes l2 {
   100% {
-    box-shadow: 0 0 0 40px #FFD7002f;
+    box-shadow: 0 0 0 40px #e509142f;
   }
 }
 
@@ -107,8 +154,8 @@ body {
   width: 10px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #FFD700;
-  box-shadow: 0 0 0 0 #FFD700;
+  background: #e50914;
+  box-shadow: 0 0 0 0 #e50914;
   animation: l3 1.5s infinite linear;
   position: relative;
 }
@@ -119,7 +166,7 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 0 0 #FFD700;
+  box-shadow: 0 0 0 0 #e50914;
   animation: inherit;
   animation-delay: -0.5s;
 }
@@ -130,7 +177,7 @@ body {
 
 @keyframes l3 {
   100% {
-    box-shadow: 0 0 0 30px #FFD7002f;
+    box-shadow: 0 0 0 30px #e509142f;
   }
 }
 
@@ -139,9 +186,9 @@ body {
   width: 40px;
   aspect-ratio: 1;
 
-  --c: linear-gradient(#FFD700 0 0);
-  --r1: radial-gradient(farthest-side at bottom, #FFD700 93%, transparent);
-  --r2: radial-gradient(farthest-side at top, #FFD700 93%, transparent);
+  --c: linear-gradient(#e50914 0 0);
+  --r1: radial-gradient(farthest-side at bottom, #e50914 93%, transparent);
+  --r2: radial-gradient(farthest-side at top, #e50914 93%, transparent);
 
   background:
     var(--c), var(--r1), var(--r2),
@@ -199,57 +246,57 @@ body {
 }
 
 /* ========================= */
-/* 🌞 LIGHT MODE (FINAL FIX) */
+/* ☀️ LIGHT MODE */
 /* ========================= */
 
 html.light {
-  background: #ffffff;
-  color: #000000;
+  background: #f9fafb;
+  color: #111827;
 }
 
 html.light body {
-  background: #ffffff;
-  color: #000000;
+  background: #f9fafb;
+  color: #111827;
 }
 
-/* Navbar / glass */
+/* Navbar */
 html.light .bg-bgColor {
-  background: #f5f5f5 !important;
-}
-
-html.light .bg-bgColor\/60 {
   background: rgba(255, 255, 255, 0.7) !important;
   backdrop-filter: blur(10px);
 }
 
-/* Buttons / inputs */
-html.light .bg-btnColor {
-  background: #e5e5e5 !important;
+/* Cards */
+html.light .bg-black {
+  background: #ffffff !important;
+  color: #111827 !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-html.light .bg-btnColor\/70 {
-  background: #e5e5e5 !important;
+/* Buttons */
+html.light .bg-btnColor {
+  background: #e5e7eb !important;
+  color: #111827 !important;
 }
 
 /* Text */
 html.light .text-secondaryTextColor {
-  color: #555 !important;
+  color: #6b7280 !important;
 }
 
 html.light .text-otherColor {
-  color: #ff3d3d !important;
-}
-
-/* Cards */
-html.light .bg-black {
-  background: #f1f1f1 !important;
-  color: #000 !important;
+  color: #e50914 !important;
 }
 
 /* Inputs */
 html.light input {
   background: #ffffff !important;
-  color: #000 !important;
+  color: #111827 !important;
+  border: 1px solid #ddd;
+}
+
+/* Placeholder */
+html.light input::placeholder {
+  color: #9ca3af !important;
 }
 
 /* Scrollbar (Light) */
@@ -258,42 +305,21 @@ html.light ::-webkit-scrollbar-track {
 }
 
 html.light ::-webkit-scrollbar-thumb {
-  background: #bbb;
+  background: #ccc;
 }
 
 html.light ::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
 
-/* 🔥 FIX TEXT VISIBILITY IN LIGHT MODE */
-
-/* Force all text to dark */
-html.light * {
-  color: #ff00ff !important;
+/* ========================= */
+/* BUTTON HOVER EFFECT */
+/* ========================= */
+button {
+  transition: all 0.2s ease;
 }
 
-/* Keep accent colors */
-html.light .text-otherColor {
-  color: #000000 !important; /*Red */
+button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
 }
-
-/* Secondary text */
-html.light .text-secondaryTextColor {
-  color: #f2f2f2 !important;
-}
-
-/* Buttons / badges text fix */
-html.light .bg-btnColor,
-html.light .bg-black {
-  color: #ffffff !important;
-}
-
-/* Search placeholder */
-html.light input::placeholder {
-  color: #777 !important;
-}
-
-
-
-
-
