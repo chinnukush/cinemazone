@@ -61,17 +61,26 @@ export default function Nav() {
 
   // SEARCH FETCH
   useEffect(() => {
-    if (!debouncedVal) return;
+  if (debouncedVal.trim() === "") {
+    setSearchResult([]);
+    return;
+  }
 
-    setIsLoading(true);
-    fetch(`${BASE}/api/search/?query=${debouncedVal}&page=1`)
-      .then((res) => res.json())
-      .then((data) => {
-        setSearchResult(data.results);
-        setIsLoading(false);
-      });
-  }, [debouncedVal]);
+  setIsLoading(true);
 
+  fetch(`${BASE}/api/search/?query=${debouncedVal}&page=1`)
+    .then((res) => res.json())
+    .then((data) => {
+      setSearchResult(data.results || []);
+      setIsLoading(false);
+    })
+    .catch((err) => {
+      console.error("Search error:", err);
+      setIsLoading(false);
+    });
+}, [debouncedVal]);
+
+  
   // DEBOUNCE
   useEffect(() => {
     const timer = setTimeout(() => {
