@@ -21,7 +21,7 @@ body {
   color: #ffffff;
 }
 
-/* Navbar / glass */
+/* Navbar */
 .bg-bgColor {
   background: rgba(20, 20, 20, 0.7);
   backdrop-filter: blur(10px);
@@ -56,6 +56,15 @@ input {
   border: 1px solid #333;
   padding: 8px;
   border-radius: 6px;
+}
+
+/* ========================= */
+/* 🎬 FIX MOVIE TEXT */
+/* ========================= */
+
+/* Dark mode text (default) */
+.text-white {
+  color: #ffffff !important;
 }
 
 /* ========================= */
@@ -259,6 +268,17 @@ html.light body {
   color: #111827;
 }
 
+/* 🔥 FIX MOVIE TITLES VISIBILITY */
+html.light .text-white {
+  color: #111827 !important;
+}
+
+html.light .text-gray-200,
+html.light .text-gray-300,
+html.light .text-gray-400 {
+  color: #374151 !important;
+}
+
 /* Navbar */
 html.light .bg-bgColor {
   background: rgba(255, 255, 255, 0.7) !important;
@@ -299,7 +319,7 @@ html.light input::placeholder {
   color: #9ca3af !important;
 }
 
-/* Scrollbar (Light) */
+/* Scrollbar */
 html.light ::-webkit-scrollbar-track {
   background: #eee;
 }
@@ -313,7 +333,7 @@ html.light ::-webkit-scrollbar-thumb:hover {
 }
 
 /* ========================= */
-/* BUTTON HOVER EFFECT */
+/* BUTTON HOVER */
 /* ========================= */
 button {
   transition: all 0.2s ease;
@@ -322,4 +342,4 @@ button {
 button:hover {
   transform: scale(1.05);
   opacity: 0.9;
-}
+    }
