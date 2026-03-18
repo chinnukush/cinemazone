@@ -6,7 +6,7 @@ import "react-lazy-load-image-component/src/effects/black-and-white.css";
 
 import { FiSearch } from "react-icons/fi";
 import { VscClose } from "react-icons/vsc";
-import { BiHomeAlt2, BiSolidMovie, BiStar } from "react-icons/bi";
+import { BiHomeAlt2, BiSolidMovie } from "react-icons/bi";
 import { BsTv } from "react-icons/bs";
 
 import posterPlaceholder from "../assets/images/poster-placeholder.png";
@@ -17,18 +17,19 @@ export default function Nav() {
 
   const [query, setQuery] = useState("");
   const [debouncedVal, setDebouncedVal] = useState("");
-  const [searcResult, setSearchResult] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(true);
   const [navStatus, setNavStatus] = useState("Home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // 🌙 THEME STATE
   const [theme, setTheme] = useState("dark");
 
   const location = useLocation();
+  const closeSearchResultsDropDown = useRef();
+  const closeMobileMenu = useRef();
 
-  // ✅ Load theme
+  // 🌙 LOAD THEME
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);
@@ -38,7 +39,7 @@ export default function Nav() {
     }
   }, []);
 
-  // ✅ Toggle theme
+  // 🌙 TOGGLE THEME
   const toggleTheme = () => {
     if (theme === "dark") {
       document.documentElement.classList.add("light");
@@ -59,23 +60,7 @@ export default function Nav() {
     else if (path.startsWith("/ser")) setNavStatus("Series");
   }, [location.pathname]);
 
-  // SEARCH FETCH
-  useEffect(() => {
-  const handler = (e) => {
-    if (
-      closeSearchResultsDropDown.current &&
-      !closeSearchResultsDropDown.current.contains(e.target)
-    ) {
-      setQuery("");
-      setSearchResult([]);
-    }
-  };
-
-  document.addEventListener("mousedown", handler);
-  return () => document.removeEventListener("mousedown", handler);
-}, []);
-  
-  // DEBOUNCE
+  // 🔥 DEBOUNCE
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedVal(query);
@@ -83,23 +68,44 @@ export default function Nav() {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // CLOSE SEARCH DROPDOWN
-  const closeSearchResultsDropDown = useRef();
+  // 🔥 SEARCH API CALL (MAIN FIX)
+  useEffect(() => {
+    if (debouncedVal.trim() === "") {
+      setSearchResult([]);
+      return;
+    }
+
+    setIsLoading(true);
+
+    fetch(`${BASE}/api/search/?query=${debouncedVal}&page=1`)
+      .then((res) => res.json())
+      .then((data) => {
+        setSearchResult(data.results || []);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Search error:", err);
+        setIsLoading(false);
+      });
+  }, [debouncedVal]);
+
+  // 🔥 CLOSE SEARCH DROPDOWN
   useEffect(() => {
     const handler = (e) => {
       if (
         closeSearchResultsDropDown.current &&
         !closeSearchResultsDropDown.current.contains(e.target)
       ) {
-        setDebouncedVal("");
+        setQuery("");
+        setSearchResult([]);
       }
     };
+
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   // MOBILE MENU CLOSE
-  const closeMobileMenu = useRef();
   useEffect(() => {
     const handler = (e) => {
       if (
@@ -109,8 +115,10 @@ export default function Nav() {
         setMobileMenuOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handler);
     document.addEventListener("scroll", handler);
+
     return () => {
       document.removeEventListener("mousedown", handler);
       document.removeEventListener("scroll", handler);
@@ -120,119 +128,76 @@ export default function Nav() {
   return (
     <>
       <div className="fixed flex items-center justify-between gap-3 z-20 bg-bgColor/60 backdrop-blur-md top-0 left-0 right-0 py-4 px-5 md:px-10 text-white">
-        
-        {/* 🔥 LEFT SIDE (LOGO + TOGGLE) */}
+
+        {/* LEFT */}
         <div className="flex items-center gap-3">
-          {/* CZ LOGO */}
           <div className="bg-black px-3 py-1 rounded-lg font-bold uppercase">
             cz
           </div>
 
-          {/* THEME TOGGLE */}
           <button
             onClick={toggleTheme}
-            className="w-14 h-7 flex items-center bg-gray-700 rounded-full p-1 transition"
+            className="w-14 h-7 flex items-center bg-gray-700 rounded-full p-1"
           >
             <div
-              className={`bg-white w-5 h-5 rounded-full transform transition ${
+              className={`bg-white w-5 h-5 rounded-full transition ${
                 theme === "light" ? "translate-x-7" : ""
               }`}
             />
           </button>
-
-          <span className="text-sm">
-            {theme === "dark" ? "🌙" : "☀️"}
-          </span>
         </div>
 
         {/* SITENAME */}
-        <Link
-          to="/"
-          className="hidden md:flex items-center gap-2 uppercase text-otherColor font-extrabold text-2xl"
-        >
-          <p>{SITENAME}</p>
+        <Link to="/" className="hidden md:block font-bold text-xl">
+          {SITENAME}
         </Link>
 
-        {/* NAVIGATION */}
-        <nav className="hidden md:block">
-          <ul className="flex items-center gap-8">
-            {[
-              { icon: BiHomeAlt2, name: "Home" },
-              { icon: BiSolidMovie, name: "Movies" },
-              { icon: BsTv, name: "Series" },
-            ].map((navItem, index) => (
-              <Link
-                key={index}
-                to={navItem.name === "Home" ? "/" : navItem.name}
-                className={
-                  navStatus === navItem.name
-                    ? "flex flex-col items-center text-otherColor scale-105"
-                    : "flex flex-col items-center hover:text-otherColor hover:scale-105"
-                }
-                onClick={() => setNavStatus(navItem.name)}
-              >
-                <li className="text-2xl">
-                  <navItem.icon />
-                </li>
-                <p className="text-sm text-secondaryTextColor">
-                  {navItem.name}
-                </p>
-              </Link>
-            ))}
-          </ul>
+        {/* NAV */}
+        <nav className="hidden md:flex gap-6">
+          <Link to="/">Home</Link>
+          <Link to="/movies">Movies</Link>
+          <Link to="/series">Series</Link>
         </nav>
 
-        {/* MOBILE MENU */}
-        <div className="relative block md:hidden">
-          <div onClick={() => setMobileMenuOpen(true)}>
-            <div className="h-[2px] w-6 bg-secondaryTextColor mb-1"></div>
-            <div className="h-[2px] w-4 bg-secondaryTextColor mb-1"></div>
-            <div className="h-[2px] w-2 bg-secondaryTextColor"></div>
-          </div>
-
-          <AnimatePresence>
-            {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 50 }}
-                className="absolute w-52 top-12 rounded-3xl bg-btnColor p-6"
-                ref={closeMobileMenu}
-              >
-                {["Home", "Movies", "Series"].map((name, i) => (
-                  <Link
-                    key={i}
-                    to={name === "Home" ? "/" : name}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block p-2"
-                  >
-                    {name}
-                  </Link>
-                ))}
-                <VscClose
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="absolute text-3xl top-2 right-2"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
         {/* SEARCH */}
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          className="relative flex items-center w-full md:w-1/2"
+        <div
+          className="relative w-full md:w-1/3"
           ref={closeSearchResultsDropDown}
         >
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search..."
-            className="py-3 px-10 bg-btnColor/70 rounded-md w-full"
+            placeholder="Search movies..."
+            className="w-full py-2 px-4 bg-btnColor rounded-md"
           />
-          <FiSearch className="absolute right-5" />
-        </form>
+          <FiSearch className="absolute right-3 top-3" />
+
+          {/* 🔥 RESULTS */}
+          {query && (
+            <div className="absolute top-12 w-full bg-black rounded-lg p-3 max-h-80 overflow-y-auto z-50">
+              {isLoading ? (
+                <p>Loading...</p>
+              ) : searchResult.length > 0 ? (
+                searchResult.map((item, i) => (
+                  <Link
+                    key={i}
+                    to={`/movie/${item.id}`}
+                    className="flex items-center gap-3 p-2 hover:bg-gray-800 rounded"
+                  >
+                    <img
+                      src={item.poster || posterPlaceholder}
+                      className="w-10 h-14 object-cover rounded"
+                    />
+                    <p>{item.title}</p>
+                  </Link>
+                ))
+              ) : (
+                <p>No results found</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
