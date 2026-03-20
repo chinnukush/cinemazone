@@ -30,7 +30,7 @@ export default {
       colors: {
         /* Text Colors */
         primaryTextColor: "#ffffff",
-        secondaryTextColor: "#d1d5db",
+        secondaryTextColor: "#ffffff",
 
         /* Cinematic Accent Color (Cinema Gold) */
         primaryBtn: "#FFD700",
@@ -41,7 +41,7 @@ export default {
         bgColorSecondary: "#1a1a1a",
 
         /* Card / Button Background */
-        btnColor: "#FFD700",
+        btnColor: "#121212",
 
         /* Highlight Color */
         otherColor: "#FFD700",
